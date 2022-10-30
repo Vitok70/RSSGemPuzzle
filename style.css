@@ -1,0 +1,89 @@
+body,
+html {
+    font: 16px/1.4 Georgia, serif;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.items{
+    padding: 0;
+    margin: 0;
+}
+.page {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+h1{
+    font: 2rem/1.2 Georgia, serif;
+    margin: 0;
+    margin-bottom: 1em;
+}
+
+.fifteen{
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    margin-bottom: 1.5rem;
+    background: #e5d6f6;
+}
+
+.item{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25%;
+    height: 25%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: rgb(110, 59, 59);
+    color: #fff;
+    cursor: pointer;
+    font-size: 2rem;
+    box-shadow: inset 1px 1px 5px #e5d6f6;
+    transition: 0.3s;
+}
+
+.itemVal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 84%;
+    height: 84%;
+    margin: 8%;
+   box-shadow: inset 0 0 0 2px #fff;
+}
+
+.btn{
+    background: rgb(110, 59, 59);
+    color: #fff;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    border: none;
+    font: 1.2rem/1.2 Georgia, serif;
+    border-radius: 10px;
+}
+
+.btn:hover{
+   background: #922ec5;
+}
+
+.fifteenWon{
+    filter: brightness(200%);
+}
+
+.none{
+    display: none;
+}
+
+.alert{
+    color: green;
+    padding: 0.5em 1.5em;
+    font: 1.2rem/1.2 Georgia, serif;
+}
