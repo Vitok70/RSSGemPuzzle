@@ -31,6 +31,7 @@ h1{
     font: 2rem/1.2 Georgia, serif;
     margin: 0;
     margin-bottom: 1em;
+    margin-top: 0.5em;
 }
 
 .fifteen{
@@ -95,3 +96,17 @@ h1{
     padding: 0.5em 1.5em;
     font: 1.2rem/1.2 Georgia, serif;
 }
+
+.timeBegin{
+    background: rgb(60, 214, 80);
+    color: #fff;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    border: none;
+    font: 1.2rem/1.2 Georgia, serif;
+    border-radius: 10px;
+}
+
+.timeBegin:hover{
+    background: #922ec5;
+ }

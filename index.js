@@ -1,7 +1,9 @@
+const timeBegin = document.querySelector('.timeBegin');
 const btn = document.querySelector('.btn');
 const containerNode = document.querySelector('.fifteen');
 const itemNodes = Array.from(document.querySelectorAll('.item'));
 const countItems = 16;
+let timer;
 
 if(itemNodes.length !== countItems) {
     throw new Error (`Должно быть ровно ${countItems} items in HTML`);
@@ -26,11 +28,15 @@ setPositionItems(matrix);// вызов функции для заполнени�
 //     setPositionItems(matrix);
 // });
 // let timer;
+
 const maxShuffleCount = 100; // количество сдвигов фишек при нажатии "перемешать"
 // **** SMART рандомное перемешивание, т.е. ПРАВИЛЬНОЕ 
 document.querySelector('.btn').addEventListener('click', () => {
 // 1. рандомное перемещение фишки на 1 клетку -  randomSwap()
 // 2. повторить шаг 1 randomSwap() несколько раз
+timer = 0;
+sanovka();// остановка секундомера
+cancel(); // обнуление секундомера
 let k = 1;
 while (k <= maxShuffleCount ) {
     randomSwap(matrix);
@@ -207,17 +213,53 @@ wonMessage.innerHTML = "<strong>Поздравляем, Вы выиграли !!
 const wonClass = 'fifteenWon';
 
 function addWonClass(){
+    sanovka();// остановка секундомера при решении задачи
     setTimeout(() => {
         containerNode.classList.add(wonClass);// вставка класса для подсветки
         btn.classList.add('none');// удаление кнопки "Перемешать"
+        timeBegin.classList.add('none');// удаление кнопки "Перемешать"
         btnSuffle.after(wonMessage);// вставка нового узла с надписью
 
         setTimeout(() =>{ // возврат в исходное полежение через 1 сек.
             containerNode.classList.remove(wonClass);
             btn.classList.remove('none');
+            timeBegin.classList.remove('none');
             wonMessage.remove();
         }, 1000);
     }, 200);
+
 }
 
+// ******  СЕКУНДОМЕР *******
+timeBegin.addEventListener('click', vpered);// запуск секундомера при нажатии кнопки START
 
+timer = 0;
+var timerInterval;
+var second = document.getElementById('second');
+var minute = document.getElementById('minute');
+
+function vpered() {
+  sanovka();
+  timerInterval = setInterval(function() {
+  timer += 1/60;
+  msVal = Math.floor((timer - Math.floor(timer))*100);
+  secondVal = Math.floor(timer) - Math.floor(timer/60) * 60;
+  minuteVal = Math.floor(timer/60);
+  ms.innerHTML = msVal < 10 ? "0" + msVal.toString() : msVal;
+  second.innerHTML = secondVal < 10 ? "0" + secondVal.toString() + ":" : secondVal;
+  minute.innerHTML = minuteVal < 10 ? "0" + minuteVal.toString() + ":" : minuteVal;
+  }, 1000/60);
+}
+
+// функция остановки секундомера
+function sanovka() {
+  clearInterval(timerInterval);
+}
+
+// функция остановки секундомера
+function cancel() {
+  ms.innerHTML = "00";
+  second.innerHTML = "00 :";
+  minute.innerHTML = "00 :";
+  }
+  
