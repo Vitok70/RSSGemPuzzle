@@ -8,9 +8,10 @@ if(itemNodes.length !== countItems) {
 }
 
 //****   1. POSITION ***********
-// получение матрицы из массива исходных чисел-фишек
+// получение матрицы из линейного массива исходных чисел-фишек
 let matrix =getMatrix(
     itemNodes.map(item => Number(item.dataset.matrixId))); //получение линейного массива исходных чисел-фишек
+    console.log(matrix);
 
 itemNodes[countItems - 1].style.display = 'none';// скрыть фишку №16
 
@@ -18,22 +19,46 @@ setPositionItems(matrix);// вызов функции для заполнени�
 
 // **** 2. SHUFFLE *****************
 // *** Рамдомное перемешивание
+// document.querySelector('.btn').addEventListener('click', () => {
+//     const flatMatrix = matrix.flat();// создать плоский массив из матрицы
+//     const shuffledArr = shuffleArray(flatMatrix);// вызов функции рандомного перемешивания плоского массива
+//     matrix = getMatrix(shuffledArr); // создание перемешанной матрицы
+//     setPositionItems(matrix);
+// });
+// let timer;
+const maxShuffleCount = 100; // количество сдвигов фишек при нажатии "перемешать"
+// **** SMART рандомное перемешивание, т.е. ПРАВИЛЬНОЕ 
 document.querySelector('.btn').addEventListener('click', () => {
-    const flatMatrix = matrix.flat();// создать плоский массив из матрицы
-    const shuffledArr = shuffleArray(flatMatrix);// вызов функции рандомного перемешивания плоского массива
-    matrix = getMatrix(shuffledArr); // создание перемешанной матрицы
-    setPositionItems(matrix);
+// 1. рандомное перемещение фишки на 1 клетку -  randomSwap()
+// 2. повторить шаг 1 randomSwap() несколько раз
+let k = 1;
+while (k <= maxShuffleCount ) {
+    randomSwap(matrix);
+    setPositionItems(matrix);// перемещение выбранной рандомной фишки на пустую ячейку
+    k++;
+}
+
+// 2. повторить шаг 1 randomSwap() несколько раз
+
+// let shuffleCount = 0;
+// // clearInterval(timer);
+
+// if (shuffleCount === 0){
+//     timer = setInterval(() => {
+//         randomSwap(matrix);
+//         setPositionItems(matrix);
+
+//         shuffleCount++;
+//         if (shuffleCount >= maxShuffleCount){
+//             // shuffleCount = 0;
+//             clearInterval(timer);
+//         }
+//     }, 100);
+// }
+
 });
 
-// **** SMART рандомное перемешивание, т.е. ПРАВИЛЬНОЕ 
-// document.querySelector('.btn').addEventListener('click', () => {
-// 1. рандомное перемещение фишки на 1 клетку.
-// 2. повторить шаг 1 несколько раз
-
-
-// });
-
-// *** 3.  Change position node by clock  *************
+// *** 3.  Change position node by click  *************
 
 const blankNumber = 16;// номер пустой ячейки в матрице
 // вызов события соответствующего клику на фишку
@@ -49,8 +74,6 @@ containerNode.addEventListener('click', (event) => {
    
      if (isValid){
         swap (buttonCoords, blankCoords, matrix);// вызов функции перемещения выбранной фишки на свободную ячейку, если такое перемещение валидно (допустимо)
-        console.log(buttonCoords);
-        console.log(blankCoords);
         setPositionItems(matrix);
     }
 
@@ -100,10 +123,37 @@ function shuffleArray(arr){
     return arr;
 }
 
-// функция рандомного перемешивания
-// function randomSwap(matrix){
+// функция рандомного SMART перемешивания
+let blockedCoords = null; // координаты для фишки, которую нельзя сдвигать
+function randomSwap(matrix){
+    const blankCoords = findCoordinatesByNumber(blankNumber, matrix);// поиск координат пустой клетки
+    const validCoords = findValidCoords( // получение массива координат валидных фишек
+        blankCoords,
+        matrix,
+        blockedCoords);
 
-// }
+   const swapCoords = validCoords[
+   Math.floor(Math.random() * validCoords.length)// получение рандомного элемента из массива валидных фишек с номером не больше длины массива
+   ];
+   swap (blankCoords, swapCoords, matrix);//переопределение координат свободной ячейки и рандомной фишки из массива валидныъ фишек
+   blockedCoords = blankCoords;
+}
+
+// функция получения массива координат валидных фишек
+function findValidCoords (blankCoords, matrix, blockedCoords){
+    const validCoords =[];
+    for (let y = 0; y < matrix.length; y++){
+        for (let x = 0; x < matrix.length; x++){
+            if (isValidForSwap({x, y}, blankCoords)){
+                if (!blockedCoords || !(blockedCoords.x === x && blockedCoords.y === y)){
+                    validCoords.push({x, y});
+                }
+            }
+        }
+    }
+return validCoords;
+}
+
 
 // функция получения координат для нажимаемой фишки 
 function findCoordinatesByNumber(number, matrix){
@@ -125,7 +175,7 @@ function isValidForSwap(coords1, coords2){
     return (diffX === 1 && diffY === 0) || (diffX === 0 && diffY === 1);
 }
 
-// функция переопределения координат перемещаемой валидной фишки после клика не неё на коордитанты свободной ячейки
+// функция переопределения координат перемещаемой валидной фишки после клика на неё на коордитанты свободной ячейки
 function swap (coords1, coords2, matrix){
     const coords1Number = matrix[coords1.y][coords1.x];
     matrix[coords1.y][coords1.x] = matrix[coords2.y][coords2.x];
