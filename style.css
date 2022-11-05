@@ -110,3 +110,8 @@ h1{
 .timeBegin:hover{
     background: #922ec5;
  }
+
+ .min, .sec, .msec{
+    font: 1.2rem/1.2 Georgia, sans-serif;
+    color: blue;
+ }

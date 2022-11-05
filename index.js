@@ -246,8 +246,8 @@ function vpered() {
   secondVal = Math.floor(timer) - Math.floor(timer/60) * 60;
   minuteVal = Math.floor(timer/60);
   ms.innerHTML = msVal < 10 ? "0" + msVal.toString() : msVal;
-  second.innerHTML = secondVal < 10 ? "0" + secondVal.toString() + ":" : secondVal;
-  minute.innerHTML = minuteVal < 10 ? "0" + minuteVal.toString() + ":" : minuteVal;
+  second.innerHTML = secondVal < 10 ? "0" + secondVal.toString() + ":" : secondVal + ":";
+  minute.innerHTML = minuteVal < 10 ? "0" + minuteVal.toString() + ":" : minuteVal + ":";
   }, 1000/60);
 }
 
@@ -261,5 +261,5 @@ function cancel() {
   ms.innerHTML = "00";
   second.innerHTML = "00 :";
   minute.innerHTML = "00 :";
-  }
+}
   
